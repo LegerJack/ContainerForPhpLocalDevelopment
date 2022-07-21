@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  php:
+    build: 
+        context: ./config/php
+    volumes: 
+      - ./:/var/www
+    ports:
+      - 80:80
+
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./config/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: local
+      MYSQL_PASSWORD: local
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=mysql
