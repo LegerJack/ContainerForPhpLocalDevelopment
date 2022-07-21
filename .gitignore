@@ -1,0 +1,4 @@
+config/mysql
+!config/php
+!config/nginx
+html
