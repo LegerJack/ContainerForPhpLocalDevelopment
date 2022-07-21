@@ -1,13 +1,22 @@
 version: '3'
 
 services:
+  nginx:
+    image: nginx
+    volumes:
+        - ./config/nginx/:/etc/nginx/conf.d/
+    networks:
+        - front
+        - backend
+    ports:
+      - 80:80
   php:
     build: 
         context: ./config/php
     volumes: 
       - ./:/var/www
-    ports:
-      - 80:80
+    networks:
+      - backend
 
   mysql:
     image: mysql
@@ -17,15 +26,21 @@ services:
       - ./config/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: local
-      MYSQL_PASSWORD: local
-    ports:
-      - 3306:3306
+    networks:
+      - backend
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
-    ports:
-      - 8080:80
     environment:
       - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    networks:
+      - backend
+
+networks:
+  front:
+      external:
+          name: front
+  backend:
