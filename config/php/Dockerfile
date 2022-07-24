@@ -1,4 +1,6 @@
 FROM php:7.3-apache
 
 RUN apt-get update && apt-get install -y \
-    && docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+    && docker-php-ext-install mysqli pdo pdo_mysql
+
+RUN a2enmod rewrite
